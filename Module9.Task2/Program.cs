@@ -27,11 +27,22 @@ namespace Module9.Task2
             while (sorterCode == null) 
             {
                 Console.Write("Выберите тип сортировки [1 - ASC or 2 - DESC]: ");
-                string s = Console.ReadLine();
-                sorterCode = (s == "1" || s == "2") ? s : null;
+                sorterCode = Console.ReadLine();
+                try
+                {
+                    SortEvent = GetSorter(sorterCode);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    sorterCode = null;
+                }
+                finally
+                {
+                    Console.WriteLine("============================");
+                    DisplayStrings();
+                }
             }
-            SortEvent = GetSorter(sorterCode);
-            DisplayStrings();
         }
 
         private static void DisplayStrings()
@@ -50,7 +61,7 @@ namespace Module9.Task2
             {
                 case "1": return AscendingSorter;
                 case "2": return DescendingSorter;
-                default: return null;
+                default: throw new InvalidSorterCodeException(sorterCode);
             }
         }
 
